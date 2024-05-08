@@ -22,5 +22,18 @@ namespace backend.Mappers
                 Purchase = stockModel.Purchase,
             };
         }
+
+        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockRequestDto)
+        {
+            return new Stock
+            {
+                Symbol = stockRequestDto.Symbol,
+                CompanyName = stockRequestDto.CompanyName,
+                Industry = stockRequestDto.Industry,
+                LastDiv = stockRequestDto.LastDiv,
+                MarketCap = stockRequestDto.MarketCap,
+                Purchase = stockRequestDto.Purchase,
+            };
+        }
     }
 }
