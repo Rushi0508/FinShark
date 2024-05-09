@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.Data;
+using backend.Dtos.Comment;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,19 @@ namespace backend.Repository
         public async Task<Comment> GetByIdAsync(int id)
         {
             return await _context.Comments.FindAsync(id);
+        }
+
+        public async Task<Comment> UpdateAsync(UpdateCommentRequestDto updateComment, int id)
+        {
+            var existingComment = await _context.Comments.FindAsync(id);
+            if (existingComment == null)
+            {
+                return null;
+            }
+            existingComment.Title = updateComment.Title;
+            existingComment.Content = updateComment.Content;
+            await _context.SaveChangesAsync();
+            return existingComment;
         }
     }
 }
