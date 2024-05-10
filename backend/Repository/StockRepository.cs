@@ -56,7 +56,9 @@ namespace backend.Repository
                     stocks = query.IsDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
                 }
             }
-            return await stocks.ToListAsync();
+            var skipNumber = (query.PageNumber - 1) * query.Pagesize;
+
+            return await stocks.Skip(skipNumber).Take(query.Pagesize).ToListAsync();
         }
 
         public async Task<Stock> GetByIdAsync(int id)
