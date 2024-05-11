@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using backend.Dtos.Comment;
 using backend.Interfaces;
 using backend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace backend.Controllers
 {
     [Route("/api/comment")]
     [ApiController]
+    [Authorize]
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository _commentRepo;
