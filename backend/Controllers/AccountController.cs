@@ -68,5 +68,46 @@ namespace backend.Controllers
                 return StatusCode(500, e);
             }
         }
+
+        [HttpPost("login")]
+
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var appUser = await _userManager.FindByNameAsync(loginDto.Username);
+                if (appUser != null)
+                {
+                    var loginResult = await _userManager.CheckPasswordAsync(appUser, loginDto.Password);
+                    if (loginResult)
+                    {
+                        return Ok(
+                            new NewUserDto
+                            {
+                                Username = appUser.UserName!,
+                                Email = appUser.Email!,
+                                Token = _tokenService.CreateToken(appUser)
+                            }
+                        );
+                    }
+                    else
+                    {
+                        return Unauthorized("Invalid username or password");
+                    }
+                }
+                else
+                {
+                    return Unauthorized("Invalid username or password");
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
     }
 }
