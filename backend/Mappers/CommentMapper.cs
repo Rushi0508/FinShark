@@ -18,6 +18,7 @@ namespace backend.Mappers
                 CreatedOn = commentModel.CreatedOn,
                 StockId = commentModel.StockId,
                 Title = commentModel.Title,
+                CreatedBy = commentModel.AppUser.UserName!
             };
         }
 
