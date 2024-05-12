@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Helpers;
 using backend.Dtos.Comment;
 using backend.Extentions;
 using backend.Interfaces;
@@ -33,10 +34,13 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [Authorize]
+        public async Task<IActionResult> GetAll([FromQuery] CommentQueryObject queryObject)
         {
-            var comments = await _commentRepo.GetAllAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var comments = await _commentRepo.GetAllAsync(queryObject);
             var commentDto = comments.Select(c => c.ToCommentDto());
 
             return Ok(commentDto);
